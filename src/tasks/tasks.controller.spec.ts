@@ -17,4 +17,47 @@ describe('TasksController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  describe('create', () => {
+    it('should create a task', async () => {
+      const task = {
+        title: 'Test task',
+        description: 'Test description',
+        done: false,
+      };
+      const result = await controller.create(task);
+      expect(result).toEqual({
+        id: expect.any(String),
+        ...task,
+      });
+    });
+
+    it('should create a task without description', async () => {
+      const task = {
+        title: 'Test task',
+        description: '',
+        done: false,
+      };
+
+      const result = await controller.create(task);
+      expect(result).toEqual({
+        id: expect.any(String),
+        ...task,
+      });
+    });
+
+    it('should create a task without done', async () => {
+      const task = {
+        title: 'Test task',
+        description: 'Test description',
+        done: false,
+      };
+
+      const result = await controller.create(task);
+      expect(result).toEqual({
+        id: expect.any(String),
+        ...task,
+      });
+    });
+  });
 });
