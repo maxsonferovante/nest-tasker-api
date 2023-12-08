@@ -14,14 +14,21 @@ export class TasksController {
     } catch (error) {
       throw new HttpException({
         status: HttpStatus.BAD_REQUEST,
-        error: 'Error creating task',
+        error: error.message || 'Error creating task',
       }, HttpStatus.BAD_REQUEST);
     }
   }
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  async findAll(): Promise<any> {
+    try {
+      return await this.tasksService.findAll();
+    } catch (error) {
+      throw new HttpException({
+        status: HttpStatus.BAD_REQUEST,
+        error: error.message || 'Error getting tasks',
+      }, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Get(':id')

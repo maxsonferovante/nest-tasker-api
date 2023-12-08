@@ -60,4 +60,13 @@ describe('TasksController', () => {
       });
     });
   });
+
+
+  describe('findAll', () => {
+    it('should return an array of tasks', async () => {
+      const result = await controller.findAll();
+      expect(result).toEqual([]);
+    });
+
+  });
 });
