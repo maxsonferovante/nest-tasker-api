@@ -25,8 +25,16 @@ export class TasksService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findOne(id: string) {
+    try {
+      const task = this.tasks.find((task) => task.id === id);
+      if (!task) {
+        return Error('Task not found');
+      }
+      return task;
+    } catch (error) {
+      return Error('Error getting task');
+    }
   }
 
   update(id: number, updateTaskDto: UpdateTaskDto) {

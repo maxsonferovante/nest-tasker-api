@@ -67,4 +67,32 @@ describe('TasksService', () => {
     });
 
   });
+
+  describe('findOne', () => {
+    it('should return a task', async () => {
+      const task = {
+        title: 'Test task',
+        description: 'Test description',
+        done: false,
+      };
+      const result = await service.findOne('1')
+      if ('id' in result) {
+        // Agora o TypeScript sabe que 'result' é um 'Task'
+        const result2 = await service.findOne(result.id)
+        expect(result2).toEqual({
+          id: expect.any(String),
+          ...task,
+        });
+      } else {
+        // 'result' deve ser um 'Error'
+        expect(result).toEqual(Error('Task not found'));
+      }
+    });
+
+    it('should return an error', async () => {
+      const result = await service.findOne('1')
+      expect(result).toEqual(Error('Task not found'));
+    });
+
+  });
 });
