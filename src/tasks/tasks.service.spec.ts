@@ -60,4 +60,11 @@ describe('TasksService', () => {
       });
     });
   });
+  describe('findAll', () => {
+    it('should return an array of tasks', async () => {
+      const result = await service.findAll()
+      expect(result).toEqual(expect.any(Array));
+    });
+
+  });
 });

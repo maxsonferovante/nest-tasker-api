@@ -13,12 +13,16 @@ export class TasksService {
       this.tasks.push(newTask);
       return newTask;
     } catch (error) {
-      return Error(error);
+      return Error('Error creating task');
     }
   }
 
-  findAll() {
-    return `This action returns all tasks`;
+  async findAll(): Promise<Task[] | Error> {
+    try {
+      return this.tasks.filter(Boolean);
+    } catch (error) {
+      return Error('Error getting tasks');
+    }
   }
 
   findOne(id: number) {
