@@ -57,13 +57,17 @@ describe('TasksController', () => {
   describe('findAll', () => {
     it('should return an array of tasks', async () => {
       const result = await controller.findAll();
-      expect(result).toEqual([]);
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: expect.any(String),
+            description: expect.any(String),
+            done: expect.any(Boolean),
+          }),
+        ]),
+      );
     });
-
   });
-
-
-
 
   describe('findOne', () => {
     it('should return a task', async () => {
