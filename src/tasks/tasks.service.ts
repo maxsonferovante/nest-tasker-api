@@ -12,7 +12,6 @@ export class TasksService {
       const task = await this.prisma.task.create({
         data: createTaskDto,
       });
-      return task;
     } catch (error) {
       return new Error('Error creating task');
     }
