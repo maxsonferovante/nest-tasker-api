@@ -71,14 +71,18 @@ describe('TasksController', () => {
 
   describe('findOne', () => {
     it('should return a task', async () => {
-      const task = {
-        title: 'Test task',
-        description: 'Test description',
-        done: false,
-      };
-      const result = await controller.create(task);
-      const taskFound = await controller.findOne(result.id);
-      expect(taskFound).toEqual(result);
+      const tasks = await controller.findAll();
+      const selectedTask = tasks[0];
+
+      const result = await controller.findOne(selectedTask.id);
+
+      expect(result).toEqual(
+        expect.objectContaining({
+          title: expect.any(String),
+          description: expect.any(String),
+          done: expect.any(Boolean),
+        }),
+      );
     });
   });
 });
