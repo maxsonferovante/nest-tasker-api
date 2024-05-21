@@ -1,8 +1,7 @@
 import { IsBoolean, IsEmpty, IsOptional, IsString } from 'class-validator';
+import { Task } from '../entities/task.entity';
 
-
-export class CreateTaskDto {
-    @IsEmpty()
+export class CreateTaskDto extends Task {
     @IsString()
     title: string;
 

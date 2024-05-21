@@ -1,47 +1,69 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { Task } from './entities/task.entity';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TasksService {
-  private tasks = [];
+  constructor(private readonly prisma: PrismaService) { }
 
-  async create(createTaskDto: CreateTaskDto): Promise<Task | Error> {
+  async create(createTaskDto: CreateTaskDto): Promise<any> {
     try {
-      const newTask = new Task(createTaskDto);
-      this.tasks.push(newTask);
-      return newTask;
+      const task = await this.prisma.task.create({
+        data: createTaskDto,
+      });
     } catch (error) {
-      return Error('Error creating task');
+      return new Error('Error creating task');
     }
   }
 
-  async findAll(): Promise<Task[] | Error> {
+  async findAll(): Promise<any> {
     try {
-      return this.tasks.filter(Boolean);
+      const tasks = await this.prisma.task.findMany();
+      return tasks;
     } catch (error) {
-      return Error('Error getting tasks');
+      return new Error('Error getting tasks');
     }
   }
 
   async findOne(id: string) {
     try {
-      const task = this.tasks.find((task) => task.id === id);
-      if (!task) {
-        return Error('Task not found');
-      }
+      const task = await this.prisma.task.findUniqueOrThrow({
+        where: {
+          id: id,
+        },
+      });
       return task;
     } catch (error) {
-      return Error('Error getting task');
+      return new Error('Error getting task');
     }
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  update(id: string, updateTaskDto: UpdateTaskDto) {
+    try {
+      const task = this.prisma.task.update({
+        where: {
+          id: id,
+        },
+        data: updateTaskDto,
+      });
+      return task;
+    } catch (error) {
+      return new Error('Error updating task');
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  remove(id: string) {
+    try {
+      const task = this.prisma.task.delete({
+        where: {
+          id: id,
+        },
+      });
+      return task;
+    }
+    catch (error) {
+      return new Error('Error deleting task');
+    }
   }
 }
